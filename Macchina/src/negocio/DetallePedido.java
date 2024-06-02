@@ -8,7 +8,7 @@ public class DetallePedido {
     private double precio;
     private int cantidad;
     
-    public DetallePedido(int id, negocio.Autoparte autoparte, double precio, int cantidad) {
+    public DetallePedido(int id, Autoparte autoparte, double precio, int cantidad) {
 		super();
 		this.id = id;
 		Autoparte = autoparte;

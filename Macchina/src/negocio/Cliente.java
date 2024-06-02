@@ -1,7 +1,10 @@
 package negocio;
 
+import java.util.ArrayList;
+
 public class Cliente {
 
+	
 	private int id;
     private String nombre;
     private String direccion;
@@ -9,8 +12,9 @@ public class Cliente {
     private String localidad;
     private String provincia;
     private String email;
+    private ArrayList<Pedido> pedidos;  // Lista de pedidos del cliente
     
-	public Cliente(int id, String nombre, String direccion, String telefono, String localidad, String provincia,
+    public Cliente(int id, String nombre, String direccion, String telefono, String localidad, String provincia,
 			String email) {
 		super();
 		this.id = id;
@@ -20,8 +24,25 @@ public class Cliente {
 		this.localidad = localidad;
 		this.provincia = provincia;
 		this.email = email;
+		this.pedidos = new ArrayList<Pedido>();
 	}
+    
+    public void agregarPedido(Pedido pedido) {
+        this.pedidos.add(pedido);
+    }
+
+    public void eliminarPedido(int id) {
+        this.pedidos.removeIf(pedido -> pedido.getId_Pedido() == id);
+    }
 	
+	public ArrayList<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(ArrayList<Pedido> pedidos) {
+		this.pedidos = pedidos;
+	}
+
 	public int getId() {
 		return id;
 	}

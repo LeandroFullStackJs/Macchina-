@@ -1,28 +1,48 @@
 package negocio;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Venta {
 
 		private int id;
 	    private Pedido pedido;
-	    private String fecha;
+	    private Date fecha;
 	    private ArrayList<DetalleVenta> detalles;
 	    private FormaDePago formaDePago;
 	    private double montoFinal;
 	    private boolean ventaDirecta;
 	    
-	    public Venta(int id, Pedido pedido, String fecha, ArrayList<DetalleVenta> detalles, FormaDePago formaDePago,
-				double montoFinal, boolean ventaDirecta) {
-			super();
-			this.id = id;
-			this.pedido = pedido;
-			this.fecha = fecha;
-			this.detalles = new ArrayList<DetalleVenta>();
-			this.formaDePago = formaDePago;
-			this.montoFinal = montoFinal;
-			this.ventaDirecta = ventaDirecta;
-		}
+	 // Constructor principal
+	    public Venta(int id, Date fecha, FormaDePago formaDePago) {
+	        this.id = id;
+	        this.fecha = fecha;
+	        this.detalles = new ArrayList<DetalleVenta>();
+	        this.formaDePago = formaDePago;
+	        this.calcularMontoFinal();
+	    }
+
+	    // Métodos estáticos para crear instancias de Venta
+	   // public static Venta cargarVentaDirecta(int id, ArrayList<DetalleVenta> detalles, FormaDePago formaDePago) {
+	    public static Venta cargarVentaDirecta(int id,  FormaDePago formaDePago) {
+	        return new Venta(id, new Date(), formaDePago);
+	    }
+	    
+	    public static Venta realizarVentaPedido(int id, Pedido pedido, FormaDePago formaDePago) {
+	        ArrayList<DetalleVenta> detalles = new ArrayList<>();
+	        for (DetallePedido detallePedido : pedido.getDetalles()) {
+	            DetalleVenta detalleVenta = new DetalleVenta(
+	                detallePedido.getId(),
+	                detallePedido.getAutoparte(),
+	                detallePedido.getPrecio(),
+	                detallePedido.getCantidad()
+	            );
+	            detalles.add(detalleVenta);
+	        }
+	        Venta venta = new Venta(id, new Date(), formaDePago);
+	        venta.calcularMontoFinal();
+	        return venta;
+	    }
 	    
 	    public void calcularMontoFinal() {
 	        
@@ -33,6 +53,8 @@ public class Venta {
 	        montoFinal = formaDePago.calcularMontoFinal(montoBase);
 	    }
 	    
+		
+
 		public int getId() {
 			return id;
 		}
@@ -45,12 +67,14 @@ public class Venta {
 		public void setPedido(Pedido pedido) {
 			this.pedido = pedido;
 		}
-		public String getFecha() {
+		public Date getFecha() {
 			return fecha;
 		}
-		public void setFecha(String fecha) {
+		
+		public void setFecha(Date fecha) {
 			this.fecha = fecha;
 		}
+		
 		public FormaDePago getFormaDePago() {
 			return formaDePago;
 		}

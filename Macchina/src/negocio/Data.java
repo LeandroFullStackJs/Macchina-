@@ -58,4 +58,47 @@ public class Data {
 
 	    // TODO Métodos parecidos para pedidos y ventas
 	    
-}
+	    public void agregarPedido(Pedido pedido) {
+	        pedidos.add(pedido);
+	        Cliente cliente = buscarCliente(pedido.getCliente().getId());
+	        if (cliente != null) {
+	            cliente.agregarPedido(pedido);
+	        }
+	    }
+
+	    public void eliminarPedido(int id) {
+	        Pedido pedido = buscarPedido(id);
+	        if (pedido != null) {
+	            pedidos.remove(pedido);
+	            Cliente cliente = buscarCliente(pedido.getCliente().getId());
+	            if (cliente != null) {
+	                cliente.eliminarPedido(id);
+	            }
+	        }
+	    }
+
+	    public Pedido buscarPedido(int id) {
+	        return pedidos.stream().filter(pedido -> pedido.getId_Pedido() == id).findFirst().orElse(null);
+	    }
+
+	    public ArrayList<Pedido> listarPedidos() {
+	        return new ArrayList<>(pedidos);
+	    }
+
+	    public void agregarVenta(Venta venta) {
+	        ventas.add(venta);
+	    }
+
+	    public void eliminarVenta(int id) {
+	        ventas.removeIf(venta -> venta.getId() == id);
+	    }
+
+	    public Venta buscarVenta(int id) {
+	        return ventas.stream().filter(venta -> venta.getId() == id).findFirst().orElse(null);
+	    }
+
+	    public ArrayList<Venta> listarVentas() {
+	        return new ArrayList<>(ventas);
+	    }
+	}
+
