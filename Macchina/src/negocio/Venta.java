@@ -12,6 +12,7 @@ public class Venta {
 	    private FormaDePago formaDePago;
 	    private double montoFinal;
 	    private boolean ventaDirecta;
+	    private String nombreClienteDirecta;
 	    
 	 // Constructor principal
 	    public Venta(int id, Date fecha, FormaDePago formaDePago) {
@@ -22,7 +23,15 @@ public class Venta {
 	        this.calcularMontoFinal();
 	    }
 
-	    // Métodos estáticos para crear instancias de Venta
+	    public Venta(int idVentaDirecta, String nombreClienteDirecta, FormaDePago medioDePagoDirecta) {
+			// TODO Auto-generated constructor stub
+	   this.id = idVentaDirecta;
+	   this.nombreClienteDirecta = nombreClienteDirecta;
+	   this.formaDePago = medioDePagoDirecta ;
+	    	// REVISAR 
+		}
+
+		// Métodos estáticos para crear instancias de Venta
 	   // public static Venta cargarVentaDirecta(int id, ArrayList<DetalleVenta> detalles, FormaDePago formaDePago) {
 	    public static Venta cargarVentaDirecta(int id,  FormaDePago formaDePago) {
 	        return new Venta(id, new Date(), formaDePago);

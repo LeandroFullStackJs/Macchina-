@@ -5,11 +5,13 @@ import java.util.ArrayList;
 public class Vehiculo {
 	
 	private String marca ;
+	private String modelo;
 	private ArrayList<Autoparte> listaAutopartes;
 	
-	public Vehiculo(String marca) {
+	public Vehiculo(String marca , String modelo) {
 		//super();
 		this.marca = marca;
+		this.modelo = modelo;
 		this.listaAutopartes = new ArrayList<Autoparte>();
 	}
 	
@@ -27,6 +29,14 @@ public class Vehiculo {
 
 	public void setMarca(String marca) {
 		this.marca = marca;
+	}
+
+	public String getModelo() {
+		return modelo;
+	}
+
+	public void setModelo(String modelo) {
+		this.modelo = modelo;
 	}
 	
 	

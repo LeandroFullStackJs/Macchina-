@@ -27,27 +27,14 @@ public class Autoparte {
 		this.stock = stock;
 		this.stock_minimo = stock_minimo;
 	}
-	// SOLO ME PIDE EL CIRCUITO DE PEDIDO Y VENTA , HACER LOS SIGUIENTES METODO SI QUEDA TIEMPO : 
-		public void listarAutoparte() {
-	        // Implementar la logica para listar autopartes 
-			// TAL VEZ SOLO CON MOSTRAR LA LISTA DE AUTOPARTES EN LA CLASE VEGICULO YA ESTARIA . 
-	    } 
-		
-		public void LlegoAlStockMin() {
-			// ESTE TAL VEZ SI HAY QUE IMPLEMENTARLO 
-		}
-		
-		public void UpdateAutoaprte() {
-			
-		}
-		
-		public void DeleteAutoparte() {
-			
-		}
-		
-		public void UpdateStock( int codigo) {
-			
-		}
+
+		  @Override
+		    public String toString() {
+		        return "Autoparte [id=" + id + ", denominacion=" + denominacion + ", descripcion=" + descripcion + 
+		               ", categoria=" + categoria + ", vehiculo=" + vehiculo  + 
+		               ", precio_unitario=" + precio_unitario + ", enlace=" + enlace + ", cantidadEnStock=" + stock + 
+		               ", stock_minimo=" + stock_minimo + "]";
+		    }
 		
 	public int getId() {
 		return id;
@@ -121,7 +108,27 @@ public class Autoparte {
 		this.stock_minimo = stock_minimo;
 	}
 
+	// SOLO ME PIDE EL CIRCUITO DE PEDIDO Y VENTA , HACER LOS SIGUIENTES METODO SI QUEDA TIEMPO : 
+	/*public void listarAutoparte() {
+         Implementar la logica para listar autopartes 
+		 TAL VEZ SOLO CON MOSTRAR LA LISTA DE AUTOPARTES EN LA CLASE VEGICULO YA ESTARIA . 
+    } 
 	
+	public void LlegoAlStockMin() {
+		 ESTE TAL VEZ SI HAY QUE IMPLEMENTARLO 
+	}
+	
+	public void UpdateAutoaprte() {
+		
+	}
+	
+	public void DeleteAutoparte() {
+		
+	}
+	
+	public void UpdateStock( int codigo) {
+		
+	} */
 	
 	
 }
