@@ -1,8 +1,14 @@
 package negocio;
 
-public class Autoparte {
+import java.io.Serializable;
+
+public class Autoparte implements Serializable{
 	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int id; 
 	private String denominacion; 
 	private String descripcion; 

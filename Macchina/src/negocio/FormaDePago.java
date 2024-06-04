@@ -1,7 +1,14 @@
 package negocio;
 
-public abstract class FormaDePago {
+import java.io.Serializable;
 
-    public abstract double calcularMontoFinal(double montoBase);
+public abstract class FormaDePago implements Serializable {
+
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public abstract double calcularMontoFinal(double montoBase);
     
 }

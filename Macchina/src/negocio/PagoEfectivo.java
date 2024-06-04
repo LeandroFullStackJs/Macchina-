@@ -1,6 +1,13 @@
 package negocio;
 
-public class PagoEfectivo extends FormaDePago {
+import java.io.Serializable;
+
+public class PagoEfectivo extends FormaDePago implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	public double calcularMontoFinal(double montoBase) {

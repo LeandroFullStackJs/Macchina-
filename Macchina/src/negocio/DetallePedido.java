@@ -1,17 +1,23 @@
 package negocio;
 
-public class DetallePedido {
+import java.io.Serializable;
+
+public class DetallePedido implements Serializable {
 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int id;
-    private Autoparte Autoparte;
+    private Autoparte autoparte;
     private double precio;
     private int cantidad;
     
     public DetallePedido(int id, Autoparte autoparte, double precio, int cantidad) {
 		super();
 		this.id = id;
-		Autoparte = autoparte;
+		this.autoparte = autoparte;
 		this.precio = precio;
 		this.cantidad = cantidad;
 	}
@@ -25,11 +31,11 @@ public class DetallePedido {
 	}
 
 	public Autoparte getAutoparte() {
-		return Autoparte;
+		return autoparte;
 	}
 
 	public void setAutoparte(Autoparte autoparte) {
-		Autoparte = autoparte;
+		this.autoparte = autoparte;
 	}
 
 	public double getPrecio() {
@@ -48,5 +54,12 @@ public class DetallePedido {
 		this.cantidad = cantidad;
 	}
     
-    
+	@Override
+    public String toString() {
+        return "DetallePedido{id=" + id +
+                ", autoparte=" + autoparte +
+                ", precio=" + precio +
+                ", cantidad=" + cantidad +
+                '}';
+    }
 }

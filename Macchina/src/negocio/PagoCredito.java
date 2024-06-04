@@ -1,7 +1,13 @@
 package negocio;
 
-public class PagoCredito extends FormaDePago {
-	 private int cuotas;
+import java.io.Serializable;
+
+public class PagoCredito extends FormaDePago  implements Serializable{
+	 /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private int cuotas;
 	 
 	 public PagoCredito(int cuotas) {
 	        if (cuotas == 2 || cuotas == 3 || cuotas == 6) {

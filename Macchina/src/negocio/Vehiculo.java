@@ -1,9 +1,14 @@
 package negocio;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Vehiculo {
+public class Vehiculo implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String marca ;
 	private String modelo;
 	private ArrayList<Autoparte> listaAutopartes;
@@ -39,6 +44,16 @@ public class Vehiculo {
 		this.modelo = modelo;
 	}
 	
-	
+	@Override
+	public String toString() {
+	    StringBuilder sb = new StringBuilder();
+	    sb.append("Marca: ").append(marca).append("\n");
+	    sb.append("Modelo: ").append(modelo).append("\n");
+	    sb.append("Autopartes:\n");
+	    for (Autoparte autoparte : listaAutopartes) {
+	        sb.append("  ").append(autoparte.toString()).append("\n");
+	    }
+	    return sb.toString();
+	}
 
 }

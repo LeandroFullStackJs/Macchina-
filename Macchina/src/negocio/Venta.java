@@ -1,10 +1,15 @@
 package negocio;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Venta {
+public class Venta implements Serializable {
 
+		/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 		private int id;
 	    private Pedido pedido;
 	    private Date fecha;
@@ -12,7 +17,8 @@ public class Venta {
 	    private FormaDePago formaDePago;
 	    private double montoFinal;
 	    private boolean ventaDirecta;
-	    private String nombreClienteDirecta;
+	    private String nombreClienteDirecta; // podria cambiarlo por Cliente cliente . 
+	    
 	    
 	 // Constructor principal
 	    public Venta(int id, Date fecha, FormaDePago formaDePago) {
@@ -111,5 +117,29 @@ public class Venta {
 			this.detalles = detalles;
 		}
 	    
-	    
+		@Override
+	    public String toString() {
+	        StringBuilder sb = new StringBuilder();
+	        sb.append("Venta{id=").append(id)
+	          .append(", fecha='").append(fecha).append('\'')
+	          .append(", montoTotal=").append(montoFinal)
+	          .append(", cliente=").append(nombreClienteDirecta)
+	          .append(", items=[");
+
+	        for (DetalleVenta detalle : detalles) {
+	            sb.append("\n\t").append(detalle);
+	        }
+	        sb.append("\n]}");
+	        return sb.toString();
+	    }
+
+		public String getNombreClienteDirecta() {
+			return nombreClienteDirecta;
+		}
+
+		public void setNombreClienteDirecta(String nombreClienteDirecta) {
+			this.nombreClienteDirecta = nombreClienteDirecta;
+		}
+		 
+		 
 }

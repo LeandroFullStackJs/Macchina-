@@ -1,8 +1,12 @@
 package datos;
 import java.io.*;
 
-public class Datos {
-	  private static final String FILENAME = "Empresa.bin";
+public class Datos implements Serializable {
+	  /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private static final String FILENAME = "Empresa.bin";
 
 	    public static boolean guardar(Object obj) {
 	        try (FileOutputStream fout = new FileOutputStream(FILENAME);

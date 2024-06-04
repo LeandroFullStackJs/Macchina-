@@ -1,9 +1,14 @@
 package negocio;
+import java.io.Serializable;
 import java.util.ArrayList;
 //import java.util.Date;
 
-public class Pedido {
+public class Pedido implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int id_Pedido; 
 	private String fecha; // Podria ser Date . 
 	private double montoTotal; 
@@ -88,7 +93,17 @@ public class Pedido {
 		this.cancelado = cancelado;
 	}
 	 
-	 
+	@Override
+    public String toString() {
+        return "Pedido{" +
+                "id=" + id_Pedido +
+                ", fecha='" + fecha + '\'' +
+                ", montoTotal=" + montoTotal +
+                ", cantidad=" + cantidad +
+                ", cliente=" + cliente +
+                ", cancelado=" + cancelado +
+                '}';
+    }
 	 
 	 
 }

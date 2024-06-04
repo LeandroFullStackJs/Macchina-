@@ -11,13 +11,17 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowAdapter;
 
 public class FPrimera extends JFrame {
 
+	private static final long serialVersionUID = 1L;
 	private Empresa empresa;
     private JTextArea displayArea;
 
+    
+    
     public FPrimera(Empresa empresa) {
         this.empresa = empresa;
         setTitle("Gestión de Tutta la Macchina");
@@ -54,27 +58,34 @@ public class FPrimera extends JFrame {
         btnGestionClientes.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 gestionarClientes();
+                empresa.guardar(); // Guardar datos
             }
         });
 
         btnGestionVentas.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 gestionarVentas();
+                empresa.guardar(); // Guardar datos
             }
         });
 
         btnGestionPedidos.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 gestionarPedidos();
+                empresa.guardar(); // Guardar datos
             }
         });
 
         btnGestionAutopartes.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 gestionarAutopartes();
+                empresa.guardar(); // Guardar datos
             }
         });
+        
+        
     }
+    
 
     private void gestionarClientes() {
         // Implementación de la gestión de clientes
@@ -369,8 +380,19 @@ public class FPrimera extends JFrame {
     }
 
     public static void main(String[] args) {
-        Empresa empresa = new Empresa("Tutta la Macchina");
+    	
+        //Empresa empresa = new Empresa("Tutta la Macchina");
+    	Empresa empresa = Empresa.recuperarse();
         FPrimera frame = new FPrimera(empresa);
+     // Agregar un WindowListener para guardar los datos al cerrar la ventana
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                empresa.guardar();
+                System.exit(0);
+            }
+        });
+        
         frame.setVisible(true);
     }
 
