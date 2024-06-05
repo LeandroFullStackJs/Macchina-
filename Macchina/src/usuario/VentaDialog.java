@@ -1,21 +1,16 @@
 package usuario;
+
 import negocio.*;
-import java.awt.EventQueue;
-
-import javax.swing.JDialog;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.ArrayList;
 
 public class VentaDialog extends JDialog {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
     private Empresa empresa;
     private Venta venta;
 
@@ -23,6 +18,8 @@ public class VentaDialog extends JDialog {
     private JTextField totalField;
     private JComboBox<String> metodoPagoComboBox;
     private JComboBox<Integer> cuotasComboBox;
+    private DefaultListModel<Autoparte> autopartesListModel;
+    private JList<Autoparte> autopartesList;
 
     private JButton guardarButton;
 
@@ -32,8 +29,8 @@ public class VentaDialog extends JDialog {
         this.venta = venta;
 
         setTitle(venta == null ? "Nueva Venta" : "Modificar Venta");
-        setSize(400, 300);
-        setLayout(new GridLayout(5, 2));
+        setSize(400, 400);
+        setLayout(new GridLayout(6, 2));
 
         add(new JLabel("Cliente:"));
         clienteComboBox = new JComboBox<>();
@@ -45,35 +42,46 @@ public class VentaDialog extends JDialog {
 
         add(new JLabel("Total:"));
         totalField = new JTextField();
+        totalField.setEditable(false); // Hacer el campo de total no editable
         add(totalField);
 
         add(new JLabel("Método de Pago:"));
         metodoPagoComboBox = new JComboBox<>(new String[]{"Efectivo", "Débito", "Crédito"});
-        metodoPagoComboBox.addActionListener(e -> actualizarCuotasComboBox());
+        metodoPagoComboBox.addActionListener(e -> {
+            actualizarCuotasComboBox();
+            actualizarTotal();
+        });
         add(metodoPagoComboBox);
 
         add(new JLabel("Cuotas:"));
         cuotasComboBox = new JComboBox<>(new Integer[]{2, 3, 6});
         cuotasComboBox.setEnabled(false);
+        cuotasComboBox.addActionListener(e -> actualizarTotal());
         add(cuotasComboBox);
 
+        add(new JLabel("Autopartes:"));
+        autopartesListModel = new DefaultListModel<>();
+        autopartesList = new JList<>(autopartesListModel);
+        List<Autoparte> autopartes = empresa.listarAutopartes();
+        for (Autoparte autoparte : autopartes) {
+            autopartesListModel.addElement(autoparte);
+        }
+        autopartesList.addListSelectionListener(e -> actualizarTotal());
+        add(new JScrollPane(autopartesList));
+
         guardarButton = new JButton(venta == null ? "Agregar" : "Modificar");
+        guardarButton.addActionListener(e -> {
+            if (venta == null) {
+                agregarVenta();
+            } else {
+                modificarVenta();
+            }
+        });
         add(guardarButton);
 
         if (venta != null) {
             cargarDatosVenta(venta);
         }
-
-        guardarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (venta == null) {
-                    agregarVenta();
-                } else {
-                    modificarVenta();
-                }
-            }
-        });
 
         setLocationRelativeTo(owner);
     }
@@ -109,7 +117,18 @@ public class VentaDialog extends JDialog {
                 formaDePago = new PagoCredito(cuotas);
             }
 
+            List<Autoparte> autopartesSeleccionadas = autopartesList.getSelectedValuesList();
+            ArrayList<DetalleVenta> detalles = new ArrayList<>();
+            for (Autoparte autoparte : autopartesSeleccionadas) {
+                DetalleVenta detalle = new DetalleVenta(empresa.generarIdDetalleVenta(), autoparte, autoparte.getPrecio_unitario(), 1);
+                detalles.add(detalle);
+                empresa.disminuirStock(detalle); // Disminuir el stock de cada autoparte
+            }
+
             venta = new Venta(empresa.generarIdVenta(), new Date(), formaDePago, cliente);
+            venta.setDetalles(detalles);
+            // Llama a calcularMontoFinal() después de agregar los detalles de la venta
+            venta.calcularMontoFinal(); 
             empresa.agregarVenta(venta);
 
             JOptionPane.showMessageDialog(this, "Venta agregada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -132,5 +151,23 @@ public class VentaDialog extends JDialog {
         } else {
             cuotasComboBox.setEnabled(false);
         }
+    }
+
+    private void actualizarTotal() {
+        double total = 0.0;
+        List<Autoparte> autopartesSeleccionadas = autopartesList.getSelectedValuesList();
+        for (Autoparte autoparte : autopartesSeleccionadas) {
+            total += autoparte.getPrecio_unitario();
+        }
+
+        String metodoPago = (String) metodoPagoComboBox.getSelectedItem();
+        if ("Crédito".equals(metodoPago) && cuotasComboBox.getSelectedItem() != null) {
+            int cuotas = (int) cuotasComboBox.getSelectedItem();
+            PagoCredito pagoCredito = new PagoCredito(cuotas);
+            total = pagoCredito.calcularMontoFinal(total);
+        }
+
+        totalField.setText(String.valueOf(total));
+        System.out.println("Total actualizado: " + total); // Agregar mensaje de depuración
     }
 }

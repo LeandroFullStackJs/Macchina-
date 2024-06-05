@@ -14,5 +14,9 @@ public class PagoEfectivo extends FormaDePago  {
 		// TODO Auto-generated method stub
 		return montoBase * 0.9;
 	}
+	
+	 public String toString() {
+	        return " Pago En Efectivo" ;
+	    }
 
 }

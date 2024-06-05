@@ -3,6 +3,9 @@ import datos.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JOptionPane;
+
 import java.io.Serializable;
 
 public class Empresa implements Serializable {
@@ -14,6 +17,7 @@ public class Empresa implements Serializable {
     private ArrayList<Venta> ventas;
     private ArrayList<Pedido> pedidos;
     private ArrayList<Autoparte> autopartes;
+    private int contadorIdDetalleVenta = 1;
     private int siguienteIdPedido; // agregado 
     private int siguienteIdVenta; // agregado 
     
@@ -83,20 +87,21 @@ public class Empresa implements Serializable {
 
  // Método para modificar una venta existente
     public void modificarVenta(int indice, Venta nuevaVenta) {
-        if (indice >= 0 && indice < ventas.size()) {
+        
             this.ventas.set(indice, nuevaVenta);
-        } else {
-            throw new IllegalArgumentException("Índice de venta fuera de rango.");
-        }
+        
     }
 
     // Método para eliminar una venta existente
-    public void eliminarVenta(int indice) {
-        if (indice >= 0 && indice < ventas.size()) {
-            this.ventas.remove(indice);
+    public void eliminarVenta(int id) {
+        
+    	Venta venta = buscarVenta(id);
+        if (venta != null) {
+            ventas.remove(venta);
         } else {
-            throw new IllegalArgumentException("Índice de venta fuera de rango.");
+            throw new IndexOutOfBoundsException("Venta con ID " + id + " no encontrada.");
         }
+        
     }
     
     public ArrayList<Venta> listarVentas() {
@@ -250,6 +255,34 @@ public class Empresa implements Serializable {
         }
     }
     
+    public synchronized int generarIdDetalleVenta() {
+        return contadorIdDetalleVenta++;
+    }
+    
+    public void disminuirStock(DetalleVenta detalle) {
+        Autoparte autoparte = detalle.getAutoparte();
+        int nuevaCantidad = autoparte.getStock() - detalle.getCantidad();
+        if (nuevaCantidad < 0) {
+            throw new IllegalArgumentException("Stock insuficiente para la autoparte: " + autoparte.getDenominacion());
+        }
+        autoparte.setStock(nuevaCantidad);
+     // Verificar si el stock ha alcanzado el stock mínimo
+        if (nuevaCantidad < autoparte.getStock_minimo()) {
+            JOptionPane.showMessageDialog(null, "El stock de la autoparte " + autoparte.getDenominacion() + " ha alcanzado el nivel mínimo.", "Advertencia de Stock Mínimo", JOptionPane.WARNING_MESSAGE);
+        }
+        
+        
+    }
+    
+   /* public int generarIdDetalleVenta() {
+        int maxId = 0;
+        for (DetalleVenta detalle : detallesVenta) {
+            if (detalle.getId() > maxId) {
+                maxId = detalle.getId();
+            }
+        }
+        return maxId + 1;
+    }*/
     // COSAS NUEVAS 
     
    /* public void convertirPedidoAVenta(int idPedido) {

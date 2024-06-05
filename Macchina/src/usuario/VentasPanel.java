@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 public class VentasPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -42,29 +43,32 @@ public class VentasPanel extends JPanel {
                 ventasTableModel.fireTableDataChanged();
             }
         });
-        buttonPanel.add(agregarButton);
 
-        JButton convertirPedidoButton = new JButton("Convertir Pedido a Venta");
-        convertirPedidoButton.addActionListener(new ActionListener() {
+        JButton eliminarButton = new JButton("Eliminar Venta");
+        eliminarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = ventasTable.getSelectedRow();
                 if (selectedRow != -1) {
-                    Venta venta = ventasTableModel.getVentaAt(selectedRow);
-                    if (venta.getPedido() != null) {
-                        empresa.convertirPedidoAVenta(venta.getId());
-                        ventasTableModel.setVentas(empresa.listarVentas());
-                        ventasTableModel.fireTableDataChanged();
-                    } else {
-                        JOptionPane.showMessageDialog(VentasPanel.this, "La venta seleccionada no tiene un pedido asociado.", "Error", JOptionPane.ERROR_MESSAGE);
+                    int confirmado = JOptionPane.showConfirmDialog(VentasPanel.this, "¿Estás seguro de eliminar esta venta?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+                    if (confirmado == JOptionPane.YES_OPTION) {
+                        try {
+                            Venta venta = ventasTableModel.getVentaAt(selectedRow);
+                            empresa.eliminarVenta(venta.getId());
+                            ventasTableModel.setVentas(empresa.listarVentas());
+                            ventasTableModel.fireTableDataChanged();
+                        } catch (IndexOutOfBoundsException ex) {
+                            JOptionPane.showMessageDialog(VentasPanel.this, "Error al eliminar la venta: índice fuera de los límites.", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                 } else {
-                    JOptionPane.showMessageDialog(VentasPanel.this, "Seleccione una venta para convertir.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(VentasPanel.this, "Por favor, seleccione una venta para eliminar.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
-        buttonPanel.add(convertirPedidoButton);
 
+        buttonPanel.add(eliminarButton);
+        buttonPanel.add(agregarButton);
         add(buttonPanel, BorderLayout.SOUTH);
     }
 

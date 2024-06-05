@@ -38,6 +38,14 @@ public class Venta implements Serializable {
 	        this.ventaDirecta = true;
 	        this.calcularMontoFinal();
 	    }
+	    public void agregarDetalle(DetalleVenta detalle) {
+	        detalles.add(detalle);
+	    }
+
+	    public void eliminarDetalle(int idDetalle) {
+	        // Implementa la lógica para eliminar un detalle de la venta
+	    }
+
 
 	    // Métodos estáticos para crear instancias de Venta
 	    public static Venta cargarVentaDirecta(int id, FormaDePago formaDePago, Cliente cliente) {

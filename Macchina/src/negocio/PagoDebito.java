@@ -14,5 +14,8 @@ public class PagoDebito extends FormaDePago  {
 		// TODO Auto-generated method stub
 		return montoBase;
 	}
+	public String toString() {
+        return " Pago con Debito" ;
+    }
 
 }
