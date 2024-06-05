@@ -2,7 +2,7 @@ package negocio;
 
 import java.io.Serializable;
 
-public class PagoDebito extends FormaDePago implements Serializable {
+public class PagoDebito extends FormaDePago  {
 
 	/**
 	 * 

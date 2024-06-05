@@ -6,45 +6,46 @@ import java.util.Date;
 
 public class Venta implements Serializable {
 
-		/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-		private int id;
+	 private static final long serialVersionUID = 1L;
+	    private int id;
 	    private Pedido pedido;
 	    private Date fecha;
 	    private ArrayList<DetalleVenta> detalles;
 	    private FormaDePago formaDePago;
 	    private double montoFinal;
 	    private boolean ventaDirecta;
-	    private String nombreClienteDirecta; // podria cambiarlo por Cliente cliente . 
+	    private Cliente cliente; // Usar un objeto Cliente en lugar de solo un nombre
 	    
-	    
-	 // Constructor principal
-	    public Venta(int id, Date fecha, FormaDePago formaDePago) {
+	    // Constructor para ventas con pedido
+	    public Venta(int id, Date fecha, FormaDePago formaDePago, Pedido pedido) {
 	        this.id = id;
 	        this.fecha = fecha;
-	        this.detalles = new ArrayList<DetalleVenta>();
+	        this.detalles = new ArrayList<>();
 	        this.formaDePago = formaDePago;
+	        this.pedido = pedido;
+	        this.ventaDirecta = false;
+	        this.cliente = pedido != null ? pedido.getCliente() : null;
 	        this.calcularMontoFinal();
 	    }
 
-	    public Venta(int idVentaDirecta, String nombreClienteDirecta, FormaDePago medioDePagoDirecta) {
-			// TODO Auto-generated constructor stub
-	   this.id = idVentaDirecta;
-	   this.nombreClienteDirecta = nombreClienteDirecta;
-	   this.formaDePago = medioDePagoDirecta ;
-	    	// REVISAR 
-		}
+	    // Constructor para ventas directas
+	    public Venta(int id, Date fecha, FormaDePago formaDePago, Cliente cliente) {
+	        this.id = id;
+	        this.fecha = fecha;
+	        this.detalles = new ArrayList<>();
+	        this.formaDePago = formaDePago;
+	        this.cliente = cliente;
+	        this.ventaDirecta = true;
+	        this.calcularMontoFinal();
+	    }
 
-		// Métodos estáticos para crear instancias de Venta
-	   // public static Venta cargarVentaDirecta(int id, ArrayList<DetalleVenta> detalles, FormaDePago formaDePago) {
-	    public static Venta cargarVentaDirecta(int id,  FormaDePago formaDePago) {
-	        return new Venta(id, new Date(), formaDePago);
+	    // Métodos estáticos para crear instancias de Venta
+	    public static Venta cargarVentaDirecta(int id, FormaDePago formaDePago, Cliente cliente) {
+	        return new Venta(id, new Date(), formaDePago, cliente);
 	    }
 	    
 	    public static Venta realizarVentaPedido(int id, Pedido pedido, FormaDePago formaDePago) {
-	        ArrayList<DetalleVenta> detalles = new ArrayList<>();
+	        Venta venta = new Venta(id, new Date(), formaDePago, pedido);
 	        for (DetallePedido detallePedido : pedido.getDetalles()) {
 	            DetalleVenta detalleVenta = new DetalleVenta(
 	                detallePedido.getId(),
@@ -52,94 +53,105 @@ public class Venta implements Serializable {
 	                detallePedido.getPrecio(),
 	                detallePedido.getCantidad()
 	            );
-	            detalles.add(detalleVenta);
+	            venta.detalles.add(detalleVenta);
 	        }
-	        Venta venta = new Venta(id, new Date(), formaDePago);
 	        venta.calcularMontoFinal();
 	        return venta;
 	    }
 	    
 	    public void calcularMontoFinal() {
-	        
-	    	double montoBase = 0;
+	        double montoBase = 0;
 	        for (DetalleVenta detalle : detalles) {
 	            montoBase += detalle.getPrecio() * detalle.getCantidad();
 	        }
 	        montoFinal = formaDePago.calcularMontoFinal(montoBase);
 	    }
 	    
-		
+	    public void agregarDetalleVenta(DetalleVenta detalle) {
+	        this.detalles.add(detalle);
+	        this.calcularMontoFinal();
+	    }
 
-		public int getId() {
-			return id;
-		}
-		public void setId(int id) {
-			this.id = id;
-		}
-		public Pedido getPedido() {
-			return pedido;
-		}
-		public void setPedido(Pedido pedido) {
-			this.pedido = pedido;
-		}
-		public Date getFecha() {
-			return fecha;
-		}
-		
-		public void setFecha(Date fecha) {
-			this.fecha = fecha;
-		}
-		
-		public FormaDePago getFormaDePago() {
-			return formaDePago;
-		}
-		public void setFormaDePago(FormaDePago formaDePago) {
-			this.formaDePago = formaDePago;
-		}
-		public double getMontoFinal() {
-			return montoFinal;
-		}
-		public void setMontoFinal(double montoFinal) {
-			this.montoFinal = montoFinal;
-		}
-		public boolean isVentaDirecta() {
-			return ventaDirecta;
-		}
-		public void setVentaDirecta(boolean ventaDirecta) {
-			this.ventaDirecta = ventaDirecta;
-		}
+	    // Getters y setters
+	    public int getId() {
+	        return id;
+	    }
 
-		public ArrayList<DetalleVenta> getDetalles() {
-			return detalles;
-		}
+	    public void setId(int id) {
+	        this.id = id;
+	    }
 
-		public void setDetalles(ArrayList<DetalleVenta> detalles) {
-			this.detalles = detalles;
-		}
-	    
-		@Override
+	    public Pedido getPedido() {
+	        return pedido;
+	    }
+
+	    public void setPedido(Pedido pedido) {
+	        this.pedido = pedido;
+	    }
+
+	    public Date getFecha() {
+	        return fecha;
+	    }
+
+	    public void setFecha(Date fecha) {
+	        this.fecha = fecha;
+	    }
+
+	    public FormaDePago getFormaDePago() {
+	        return formaDePago;
+	    }
+
+	    public void setFormaDePago(FormaDePago formaDePago) {
+	        this.formaDePago = formaDePago;
+	    }
+
+	    public double getMontoFinal() {
+	        return montoFinal;
+	    }
+
+	    public void setMontoFinal(double montoFinal) {
+	        this.montoFinal = montoFinal;
+	    }
+
+	    public boolean isVentaDirecta() {
+	        return ventaDirecta;
+	    }
+
+	    public void setVentaDirecta(boolean ventaDirecta) {
+	        this.ventaDirecta = ventaDirecta;
+	    }
+
+	    public ArrayList<DetalleVenta> getDetalles() {
+	        return detalles;
+	    }
+
+	    public void setDetalles(ArrayList<DetalleVenta> detalles) {
+	        this.detalles = detalles;
+	    }
+
+	    public Cliente getCliente() {
+	        return cliente;
+	    }
+
+	    public void setCliente(Cliente cliente) {
+	        this.cliente = cliente;
+	    }
+
+	    @Override
 	    public String toString() {
 	        StringBuilder sb = new StringBuilder();
 	        sb.append("Venta{id=").append(id)
 	          .append(", fecha='").append(fecha).append('\'')
 	          .append(", montoTotal=").append(montoFinal)
-	          .append(", cliente=").append(nombreClienteDirecta)
+	          .append(", cliente=").append(cliente != null ? cliente.getNombre() : "N/A")
 	          .append(", items=[");
-
+	        
 	        for (DetalleVenta detalle : detalles) {
 	            sb.append("\n\t").append(detalle);
 	        }
 	        sb.append("\n]}");
 	        return sb.toString();
 	    }
-
-		public String getNombreClienteDirecta() {
-			return nombreClienteDirecta;
-		}
-
-		public void setNombreClienteDirecta(String nombreClienteDirecta) {
-			this.nombreClienteDirecta = nombreClienteDirecta;
-		}
 		 
 		 
 }

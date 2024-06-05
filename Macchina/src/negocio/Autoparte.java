@@ -87,6 +87,9 @@ public class Autoparte implements Serializable{
 	}
 
 	public void setPrecio_unitario(double precio_unitario) {
+		if (precio_unitario < 0) {
+            throw new IllegalArgumentException("El precio unitario no puede ser negativo");
+        }
 		this.precio_unitario = precio_unitario;
 	}
 
@@ -103,14 +106,21 @@ public class Autoparte implements Serializable{
 	}
 
 	public void setStock(int stock) {
+		if (stock < 0) {
+            throw new IllegalArgumentException("El stock no puede ser negativo");
+        }
 		this.stock = stock;
 	}
 
 	public int getStock_minimo() {
+		
 		return stock_minimo;
 	}
 
 	public void setStock_minimo(int stock_minimo) {
+		if (stock_minimo < 0) {
+            throw new IllegalArgumentException("El stock mínimo no puede ser negativo");
+        }
 		this.stock_minimo = stock_minimo;
 	}
 
