@@ -1,4 +1,5 @@
 package usuario;
+
 import negocio.*;
 import javax.swing.*;
 import java.awt.*;
@@ -21,13 +22,15 @@ public class PedidoDialog extends JDialog {
     private JComboBox<Integer> cuotasComboBox;
     private JButton guardarButton;
     private JButton convertirVentaButton;
+    private Runnable updateVentasCallback;
 
-    public PedidoDialog(Frame owner, Empresa empresa, Pedido pedido) {
+    public PedidoDialog(Frame owner, Empresa empresa, Pedido pedido, Runnable updateVentasCallback) {
         super(owner, "Pedido", true);
         this.empresa = empresa;
         this.pedido = pedido;
         this.ventaConfirmada = false;
-        
+        this.updateVentasCallback = updateVentasCallback;
+
         setLayout(new GridLayout(6, 2));
 
         add(new JLabel("Cliente ID:"));
@@ -138,7 +141,14 @@ public class PedidoDialog extends JDialog {
                 formaDePago = new PagoCredito(cuotas);
             }
 
+            Venta venta = Venta.realizarVentaPedido(empresa.generarIdVenta(), pedido, formaDePago);
+            empresa.agregarVenta(venta);
+            empresa.cancelarPedido(pedido.getId_Pedido());
+
             ventaConfirmada = true;
+            if (updateVentasCallback != null) {
+                updateVentasCallback.run();
+            }
             dispose();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al convertir el pedido en venta: " + e.getMessage());

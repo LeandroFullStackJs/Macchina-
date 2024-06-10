@@ -6,7 +6,7 @@ import negocio.PagoCredito;
 import negocio.PagoDebito;
 import negocio.PagoEfectivo;
 import negocio.Pedido;
-
+import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.*;
 import java.awt.*;
@@ -74,5 +74,11 @@ public class VentasPanel extends JPanel {
 
     public JTable getVentasTable() {
         return ventasTable;
+    }
+    
+    public void actualizarTabla() {
+        List<Venta> ventas = empresa.listarVentas();
+        ventasTableModel.setVentas(ventas);
+        ventasTableModel.fireTableDataChanged();
     }
 }

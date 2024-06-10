@@ -31,16 +31,16 @@ public class FPrimera extends JFrame {
 
         ClientesPanel clientesPanel = new ClientesPanel(empresa);
         AutopartesPanel autopartesPanel = new AutopartesPanel(empresa);
-        PedidosPanel pedidosPanel = new PedidosPanel(empresa);
         VentasPanel ventasPanel = new VentasPanel(empresa);
-
+        PedidosPanel pedidosPanel = new PedidosPanel(empresa, ventasPanel);
+        
         tabbedPane.addTab("Clientes", clientesPanel);
         tabbedPane.addTab("Autopartes", autopartesPanel);
         tabbedPane.addTab("Pedidos", pedidosPanel);
         tabbedPane.addTab("Ventas", ventasPanel);
 
-        add(tabbedPane, BorderLayout.CENTER);
-
+        getContentPane().add(tabbedPane, BorderLayout.CENTER);  
+ 
         // Barra de menú
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);

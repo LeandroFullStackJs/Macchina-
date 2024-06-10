@@ -1,4 +1,5 @@
 package usuario;
+
 import negocio.Autoparte;
 import negocio.Empresa;
 import javax.swing.JPanel;
@@ -10,8 +11,7 @@ import java.util.ArrayList;
 
 public class AutopartesPanel extends JPanel {
 
-	private static final long serialVersionUID = 1L;
-
+    private static final long serialVersionUID = 1L;
     private Empresa empresa;
     private JTable table;
     private AutopartesTableModel tableModel;
@@ -34,9 +34,13 @@ public class AutopartesPanel extends JPanel {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                AutoparteDialog dialog = new AutoparteDialog(empresa, null);
+                AutoparteDialog dialog = new AutoparteDialog(empresa, null, new Runnable() {
+                    @Override
+                    public void run() {
+                        actualizarTabla();
+                    }
+                });
                 dialog.setVisible(true);
-                actualizarTabla();
             }
         });
 
@@ -46,13 +50,16 @@ public class AutopartesPanel extends JPanel {
                 int selectedRow = table.getSelectedRow();
                 if (selectedRow != -1) {
                     Autoparte autoparte = tableModel.getAutoparteAt(selectedRow);
-                    AutoparteDialog dialog = new AutoparteDialog(empresa, autoparte);
+                    AutoparteDialog dialog = new AutoparteDialog(empresa, autoparte, new Runnable() {
+                        @Override
+                        public void run() {
+                            actualizarTabla();
+                        }
+                    });
                     dialog.setVisible(true);
-                    actualizarTabla();
                 } else {
                     JOptionPane.showMessageDialog(AutopartesPanel.this, "Por favor, seleccione una autoparte para modificar.");
                 }
-                
             }
         });
 
@@ -62,7 +69,7 @@ public class AutopartesPanel extends JPanel {
                 int selectedRow = table.getSelectedRow();
                 if (selectedRow != -1) {
                     Autoparte autoparte = tableModel.getAutoparteAt(selectedRow);
-                    empresa.eliminarAutoparte(autoparte.getId()); // ERROR eliminarAutoparte , fijarse en la implementacion en la clase EMPRESA , tiene que pasarle un id . 
+                    empresa.eliminarAutoparte(autoparte.getId());
                     actualizarTabla();
                 } else {
                     JOptionPane.showMessageDialog(AutopartesPanel.this, "Por favor, seleccione una autoparte para eliminar.");
