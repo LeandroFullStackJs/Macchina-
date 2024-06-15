@@ -65,7 +65,7 @@ public class Cliente  implements Serializable {
     }
 
     public void eliminarPedido(int id) {
-        this.pedidos.removeIf(pedido -> pedido.getId_Pedido() == id);
+        this.pedidos.removeIf(pedido -> pedido.getId_Pedido() == id); // removeIf: es un método de la interfaz Collection en Java. 
     }
 	
 	public List<Pedido> getPedidos() {

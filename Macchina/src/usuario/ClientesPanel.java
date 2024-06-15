@@ -55,7 +55,7 @@ public class ClientesPanel extends JPanel {
         });
         buttonPanel.add(modificarButton);
 
-        JButton eliminarButton = new JButton("Eliminar");
+     /*   JButton eliminarButton = new JButton("Eliminar");
         eliminarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -73,7 +73,7 @@ public class ClientesPanel extends JPanel {
                 }
             }
         });
-        buttonPanel.add(eliminarButton);
+        buttonPanel.add(eliminarButton); */
 
         add(buttonPanel, BorderLayout.SOUTH);
     }

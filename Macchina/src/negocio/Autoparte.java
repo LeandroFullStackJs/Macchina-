@@ -123,28 +123,4 @@ public class Autoparte implements Serializable{
         }
 		this.stock_minimo = stock_minimo;
 	}
-
-	// SOLO ME PIDE EL CIRCUITO DE PEDIDO Y VENTA , HACER LOS SIGUIENTES METODO SI QUEDA TIEMPO : 
-	/*public void listarAutoparte() {
-         Implementar la logica para listar autopartes 
-		 TAL VEZ SOLO CON MOSTRAR LA LISTA DE AUTOPARTES EN LA CLASE VEGICULO YA ESTARIA . 
-    } 
-	
-	public void LlegoAlStockMin() {
-		 ESTE TAL VEZ SI HAY QUE IMPLEMENTARLO 
-	}
-	
-	public void UpdateAutoaprte() {
-		
-	}
-	
-	public void DeleteAutoparte() {
-		
-	}
-	
-	public void UpdateStock( int codigo) {
-		
-	} */
-	
-	
 }
