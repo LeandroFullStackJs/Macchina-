@@ -52,7 +52,7 @@ public class Venta implements Serializable {
 	        return new Venta(id, new Date(), formaDePago, cliente);
 	    }
 	    
-	    public static Venta realizarVentaPedido(int id, Pedido pedido, FormaDePago formaDePago) {
+	    public static Venta realizarVentaPedido(int id, Pedido pedido, FormaDePago formaDePago) { 
 	        Venta venta = new Venta(id, new Date(), formaDePago, pedido);
 	        for (DetallePedido detallePedido : pedido.getDetalles()) {
 	            DetalleVenta detalleVenta = new DetalleVenta(
@@ -80,7 +80,7 @@ public class Venta implements Serializable {
 	        this.calcularMontoFinal();
 	    }
 
-	    // Getters y setters
+	    
 	    public int getId() {
 	        return id;
 	    }
@@ -161,5 +161,14 @@ public class Venta implements Serializable {
 	        return sb.toString();
 	    }
 		 
+	    // PODRIA TENER EL CODIGO DE convertirPedidoAVenta aca , pero seria mas dificil al tener la logica de la interfaz en PedidoDialog . 
+	  /*  public class Venta {
+	        public static Venta convertirPedidoAVenta(Empresa empresa, Pedido pedido, FormaDePago formaDePago) throws Exception {
+	            Venta venta = Venta.realizarVentaPedido(empresa.generarIdVenta(), pedido, formaDePago);
+	            empresa.agregarVenta(venta);
+	            empresa.cancelarPedido(pedido.getId_Pedido());
+	            return venta;
+	        }
+	    } */
 		 
 }

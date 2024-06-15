@@ -23,7 +23,7 @@ public class AutoparteDialog extends JDialog {
     private JTextField idField;
     private JTextField marcaField;
     private JTextField modeloField;
-    private Runnable updateCallback;
+    private Runnable updateCallback; // Callback para actualizar la interfaz
 
     public AutoparteDialog(Empresa empresa, Autoparte autoparte, Runnable updateCallback) {
         this.empresa = empresa;
@@ -45,7 +45,7 @@ public class AutoparteDialog extends JDialog {
         marcaField = new JTextField();
         modeloField = new JTextField();
 
-        if (autoparte != null) {
+        if (autoparte != null) { // Agrega o modifica la autoparte en la empresa . 
             idField.setText(String.valueOf(autoparte.getId()));
             denominacionField.setText(autoparte.getDenominacion());
             descripcionField.setText(autoparte.getDescripcion());
@@ -103,7 +103,8 @@ public class AutoparteDialog extends JDialog {
                         empresa.modificarAutoparte(id, nuevaAutoparte);
                     }
 
-                    if (updateCallback != null) {
+                    
+                    if (updateCallback != null) { // Llama al callback de actualización si no es nulo
                         updateCallback.run();
                     }
 
@@ -117,7 +118,7 @@ public class AutoparteDialog extends JDialog {
         getContentPane().add(saveButton);
     }
 
-    private Vehiculo obtenerVehiculoDesdeInterfaz() {
+    private Vehiculo obtenerVehiculoDesdeInterfaz() { // Metodo auxiliar para obtener un objeto Vehiculo a partir de los campos de texto . 
         String marca = marcaField.getText();
         String modelo = modeloField.getText();
         return new Vehiculo(marca, modelo);

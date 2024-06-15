@@ -41,7 +41,7 @@ public class PedidosTableModel extends AbstractTableModel {
 	            case 1:
 	                return detallesPedidoToString(pedido.getDetalles());
 	            case 2:
-	                return new SimpleDateFormat("yyyy-MM-dd").format(pedido.getFecha());
+	                return new SimpleDateFormat("yyyy-MM-dd").format(pedido.getFecha()); // Formatea la fecha del pedido en el formato "yyyy-MM-dd" (año-mes-día)
 	            case 3:
 	                return pedido.isCancelado();
 	            default:

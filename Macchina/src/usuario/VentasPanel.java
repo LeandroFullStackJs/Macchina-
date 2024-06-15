@@ -50,6 +50,7 @@ public class VentasPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = ventasTable.getSelectedRow();
                 if (selectedRow != -1) {
+                	// Confirma si el usuario realmente desea eliminar la venta seleccionada
                     int confirmado = JOptionPane.showConfirmDialog(VentasPanel.this, "¿Estás seguro de eliminar esta venta?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
                     if (confirmado == JOptionPane.YES_OPTION) {
                         try {

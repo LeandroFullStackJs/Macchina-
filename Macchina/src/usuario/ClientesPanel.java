@@ -10,7 +10,7 @@ public class ClientesPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
     private Empresa empresa;
-    private JTable clientesTable;
+    private JTable clientesTable; // Tabla para mostrar los clientes 
     private ClientesTableModel clientesTableModel;
 
     public ClientesPanel(Empresa empresa) {
@@ -25,18 +25,21 @@ public class ClientesPanel extends JPanel {
 
         JPanel buttonPanel = new JPanel();
         
+     // Botón para agregar clientes
         JButton agregarButton = new JButton("Agregar");
         agregarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ClienteDialog dialog = new ClienteDialog(null, empresa, null);
                 dialog.setVisible(true);
+                // Actualiza el modelo de la tabla con los nuevos datos
                 clientesTableModel.setClientes(empresa.listarClientes());
                 clientesTableModel.fireTableDataChanged();
             }
         });
         buttonPanel.add(agregarButton);
 
+     // Botón para modificar clientes
         JButton modificarButton = new JButton("Modificar");
         modificarButton.addActionListener(new ActionListener() {
             @Override
@@ -79,6 +82,6 @@ public class ClientesPanel extends JPanel {
     }
 
     public JTable getClientesTable() {
-        return clientesTable;
+        return clientesTable; // Devuelve la tabla de clientes
     }
 }

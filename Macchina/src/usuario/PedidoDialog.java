@@ -55,12 +55,15 @@ public class PedidoDialog extends JDialog {
         cuotasComboBox.setEnabled(false);
         add(cuotasComboBox);
 
+     // Si se pasa un pedido, rellena los campos con los datos del pedido
+        
         if (pedido != null) {
             clienteField.setText(String.valueOf(pedido.getCliente().getId()));
             fechaField.setText(new SimpleDateFormat("yyyy-MM-dd").format(pedido.getFecha()));
             autopartesField.setText(pedido.getAutopartesNombres());
         }
 
+        // Boton para guardar el pedido
         guardarButton = new JButton("Guardar");
         guardarButton.addActionListener(new ActionListener() {
             @Override
@@ -69,7 +72,8 @@ public class PedidoDialog extends JDialog {
             }
         });
         add(guardarButton);
-
+        
+        // Boton para convertir el pedido en una venta
         convertirVentaButton = new JButton("Convertir a Venta");
         convertirVentaButton.addActionListener(new ActionListener() {
             @Override
@@ -83,12 +87,13 @@ public class PedidoDialog extends JDialog {
         setLocationRelativeTo(owner);
     }
 
-    private void actualizarCuotasComboBox() {
+   
+    private void actualizarCuotasComboBox() { // Método para habilitar o deshabilitar el ComboBox de cuotas basado en el metodo de pago seleccionado
         String metodoPago = (String) metodoPagoComboBox.getSelectedItem();
-        cuotasComboBox.setEnabled("Crédito".equals(metodoPago));
+        cuotasComboBox.setEnabled("Crédito".equals(metodoPago)); // Habilita cuotas solo si el metodo de pago es credito
     }
 
-    private void guardarPedido() {
+    private void guardarPedido() {     // Metodo para guardar el pedido
         try {
             int clienteId = Integer.parseInt(clienteField.getText());
             Cliente cliente = empresa.buscarCliente(clienteId);
@@ -105,13 +110,13 @@ public class PedidoDialog extends JDialog {
                 return;
             }
 
-            if (pedido == null) {
+            if (pedido == null) { // Si el pedido es nuevo, crea un nuevo pedido y lo agrega a la empresa
                 Pedido nuevoPedido = new Pedido(0, fecha, cliente);
                 for (Autoparte autoparte : autopartes) {
                     nuevoPedido.agregarDetalle(new DetallePedido(0, autoparte, autoparte.getPrecio_unitario(), 1)); // Cantidad 1 por defecto
                 }
                 empresa.agregarPedido(nuevoPedido);
-            } else {
+            } else { // Si el pedido ya existe, actualiza sus datos
                 pedido.setCliente(cliente);
                 pedido.setFecha(fecha);
                 pedido.getDetalles().clear();
@@ -121,15 +126,19 @@ public class PedidoDialog extends JDialog {
                 empresa.modificarPedido(pedido);
             }
 
-            dispose();
+            dispose(); // Cierra el diálogo
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Error al guardar los datos del pedido: " + ex.getMessage());
         }
     }
 
+    // PONGO EL METODO convertirPedidoAVenta aca porque uso datos que estan directamente disponibles en PedidoDialog , como el pedido actual 
+    //y los metodos de pago seleccionados . y el dialog controla el flujo del proceso de conversion de pedido a venta y la actualizacion de la interfaz 
+    //y manejo de excepsiones , por eso hace el codigo mas comprensible y Encapsula la logica de la interfaz de usuario .
+    
     private void convertirPedidoAVenta() {
         try {
-            String metodoPago = (String) metodoPagoComboBox.getSelectedItem();
+            String metodoPago = (String) metodoPagoComboBox.getSelectedItem(); // Obtiene el metodo de pago seleccionado
             FormaDePago formaDePago;
 
             if ("Efectivo".equals(metodoPago)) {
@@ -147,7 +156,7 @@ public class PedidoDialog extends JDialog {
 
             ventaConfirmada = true;
             if (updateVentasCallback != null) {
-                updateVentasCallback.run();
+                updateVentasCallback.run(); // Ejecuta el callback para actualizar la lista de ventas
             }
             dispose();
         } catch (Exception e) {
@@ -155,11 +164,11 @@ public class PedidoDialog extends JDialog {
         }
     }
 
-    public boolean isVentaConfirmada() {
+    public boolean isVentaConfirmada() { // No la estoy utilizando 
         return ventaConfirmada;
     }
 
-    public FormaDePago getFormaDePagoSeleccionada() {
+    public FormaDePago getFormaDePagoSeleccionada() { // Con este metodo obtengo la forma de pago seleccionada 
         String metodoPago = (String) metodoPagoComboBox.getSelectedItem();
         if ("Efectivo".equals(metodoPago)) {
             return new PagoEfectivo();

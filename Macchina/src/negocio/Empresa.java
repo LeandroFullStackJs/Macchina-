@@ -17,9 +17,9 @@ public class Empresa implements Serializable {
     private ArrayList<Venta> ventas;
     private ArrayList<Pedido> pedidos;
     private ArrayList<Autoparte> autopartes;
-    private int contadorIdDetalleVenta = 1;
-    private int siguienteIdPedido; // agregado 
-    private int siguienteIdVenta; // agregado 
+    private int contadorIdDetalleVenta = 1; // Contador para generar IDs  para los detalles de venta.
+    private int siguienteIdPedido; // Contador para generar IDs para los pedidos .
+    private int siguienteIdVenta; // Contador para generar IDs para las ventas . 
     
     public Empresa(String nombre) {
         this.nombre = nombre;
@@ -27,19 +27,19 @@ public class Empresa implements Serializable {
         this.ventas = new ArrayList<>();
         this.pedidos = new ArrayList<>();
         this.autopartes = new ArrayList<>();
-        this.siguienteIdPedido = 1; // Iniciamos el ID en 1, ajusta según sea necesario
-        this.siguienteIdVenta = 1; // Inicializa el ID de ventas
+        this.siguienteIdPedido = 1; // Inicializa el ID de pedidos en 1 .
+        this.siguienteIdVenta = 1; // Inicializa el ID de ventas en 1 . 
 
     }
 
-    public static Empresa recuperarse() {
+    public static Empresa recuperarse() { // Metodo estático para recuperar una instancia de Empresa desde el almacenamiento , Por eso utilizo Datos.recuperar() . 
         Empresa emp = (Empresa)Datos.recuperar();
         if (emp == null)
-            emp = new Empresa("LA EMPRESA S.A.");
+            emp = new Empresa("Tutta la Machinna");
         return emp;
     }
 
-    public boolean guardar() {
+    public boolean guardar() { // Guardar la instancia actual 
         return Datos.guardar(this);
     }
 
@@ -71,12 +71,12 @@ public class Empresa implements Serializable {
         }
     }
 
-    public void eliminarCliente(int id) {
+    /* public void eliminarCliente(int id) {
         Cliente cliente = buscarCliente(id);
         if (cliente != null) {
             clientes.remove(cliente);
         }
-    }
+    } */ // No hay que hacer un eliminado fisico de los clientes. 
 
     // Métodos para gestionar ventas
     public void agregarVenta(Venta venta) {
@@ -255,43 +255,24 @@ public class Empresa implements Serializable {
         }
     }
     
-    public synchronized int generarIdDetalleVenta() {
+    public synchronized int generarIdDetalleVenta() { // Metodo sincronizado para generar un nuevo ID de detalle de venta
         return contadorIdDetalleVenta++;
     }
     
-    public void disminuirStock(DetalleVenta detalle) {
+    public void disminuirStock(DetalleVenta detalle) { // Método para disminuir el stock de una autoparte basandome en un detalle de venta
         Autoparte autoparte = detalle.getAutoparte();
         int nuevaCantidad = autoparte.getStock() - detalle.getCantidad();
         if (nuevaCantidad < 0) {
             throw new IllegalArgumentException("Stock insuficiente para la autoparte: " + autoparte.getDenominacion());
         }
         autoparte.setStock(nuevaCantidad);
-     // Verificar si el stock ha alcanzado el stock mínimo
+        
+     // Verificar si el stock ha alcanzado el stock mínimo y avisar por pantalla con un showMessageDialog . 
         if (nuevaCantidad < autoparte.getStock_minimo()) {
             JOptionPane.showMessageDialog(null, "El stock de la autoparte " + autoparte.getDenominacion() + " ha alcanzado el nivel mínimo.", "Advertencia de Stock Mínimo", JOptionPane.WARNING_MESSAGE);
         }
         
         
     }
-    
-   /* public int generarIdDetalleVenta() {
-        int maxId = 0;
-        for (DetalleVenta detalle : detallesVenta) {
-            if (detalle.getId() > maxId) {
-                maxId = detalle.getId();
-            }
-        }
-        return maxId + 1;
-    }*/
-    // COSAS NUEVAS 
-    
-   /* public void convertirPedidoAVenta(int idPedido) {
-        Pedido pedido = buscarPedido(idPedido);
-        if (pedido != null) {
-            Venta venta = new Venta(pedido.getCliente(), LocalDate.now(), pedido.calcularTotal(), "Pedido convertido", 1); // ERROR
-            ventas.add(venta);
-            pedidos.remove(pedido);
-        }
-    } */
 }
 

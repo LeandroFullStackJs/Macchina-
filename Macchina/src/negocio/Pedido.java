@@ -49,7 +49,7 @@ public class Pedido implements Serializable {
 	        }
 	    }
 
-	    // Getters y setters
+	    
 	    public Cliente getCliente() {
 	        return cliente;
 	    }
@@ -135,7 +135,7 @@ public class Pedido implements Serializable {
 		            nombres.append(detalle.getAutoparte().getDenominacion()).append(", ");
 		        }
 		        if (nombres.length() > 0) {
-		            nombres.setLength(nombres.length() - 2); // Remove last comma and space
+		            nombres.setLength(nombres.length() - 2); // saca la ultima coma . 
 		        }
 		        return nombres.toString();
 		    }

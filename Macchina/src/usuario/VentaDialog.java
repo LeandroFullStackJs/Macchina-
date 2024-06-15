@@ -49,14 +49,14 @@ public class VentaDialog extends JDialog {
         metodoPagoComboBox = new JComboBox<>(new String[]{"Efectivo", "Débito", "Crédito"});
         metodoPagoComboBox.addActionListener(e -> {
             actualizarCuotasComboBox();
-            actualizarTotal();
+            actualizarTotal(); // Listener para actualizar el total segun el metodo de pago seleccionado .
         });
         add(metodoPagoComboBox);
 
         add(new JLabel("Cuotas:"));
         cuotasComboBox = new JComboBox<>(new Integer[]{2, 3, 6});
         cuotasComboBox.setEnabled(false);
-        cuotasComboBox.addActionListener(e -> actualizarTotal());
+        cuotasComboBox.addActionListener(e -> actualizarTotal()); // Listener para actualizar el total segun las cuotas seleccionadas . 
         add(cuotasComboBox);
 
         add(new JLabel("Autopartes:"));
@@ -66,7 +66,7 @@ public class VentaDialog extends JDialog {
         for (Autoparte autoparte : autopartes) {
             autopartesListModel.addElement(autoparte);
         }
-        autopartesList.addListSelectionListener(e -> actualizarTotal());
+        autopartesList.addListSelectionListener(e -> actualizarTotal()); // Listener para actualizar el total segun las autopartes seleccionadas .
         add(new JScrollPane(autopartesList));
 
         guardarButton = new JButton(venta == null ? "Agregar" : "Modificar");
@@ -80,14 +80,14 @@ public class VentaDialog extends JDialog {
         add(guardarButton);
 
         if (venta != null) {
-            cargarDatosVenta(venta);
+            cargarDatosVenta(venta);  // Carga los datos de la venta en los componentes si se está modificando una venta existente.
         }
 
-        setLocationRelativeTo(owner);
+        setLocationRelativeTo(owner); // Centra el dialogo en relación al frame principal.
     }
 
-    private void cargarDatosVenta(Venta venta) {
-        clienteComboBox.setSelectedItem(venta.getCliente());
+    private void cargarDatosVenta(Venta venta) { // Método para cargar los datos de una venta en los componentes del diálogo . 
+        clienteComboBox.setSelectedItem(venta.getCliente()); 
         totalField.setText(String.valueOf(venta.getMontoFinal()));
         if (venta.getFormaDePago() instanceof PagoCredito) {
             metodoPagoComboBox.setSelectedItem("Crédito");
@@ -101,7 +101,7 @@ public class VentaDialog extends JDialog {
         }
     }
 
-    private void agregarVenta() {
+    private void agregarVenta() { // Método para agregar una nueva venta
         try {
             Cliente cliente = (Cliente) clienteComboBox.getSelectedItem();
             double total = Double.parseDouble(totalField.getText().trim());
@@ -127,8 +127,7 @@ public class VentaDialog extends JDialog {
 
             venta = new Venta(empresa.generarIdVenta(), new Date(), formaDePago, cliente);
             venta.setDetalles(detalles);
-            // Llama a calcularMontoFinal() después de agregar los detalles de la venta
-            venta.calcularMontoFinal(); 
+            venta.calcularMontoFinal();  // Llama a calcularMontoFinal() después de agregar los detalles de la venta
             empresa.agregarVenta(venta);
 
             JOptionPane.showMessageDialog(this, "Venta agregada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -141,10 +140,10 @@ public class VentaDialog extends JDialog {
     }
 
     private void modificarVenta() {
-        // Implementación similar a agregarVenta, pero modificando la venta existente
+    	// No hago el codigo porque modificar una venta seria peligroso ya que la venta ya fue realizada y se pago de forma exitosa .
     }
 
-    private void actualizarCuotasComboBox() {
+    private void actualizarCuotasComboBox() { // Método para actualizar el ComboBox de cuotas según el método de pago seleccionado . 
         String metodoPago = (String) metodoPagoComboBox.getSelectedItem();
         if ("Crédito".equals(metodoPago)) {
             cuotasComboBox.setEnabled(true);
@@ -153,7 +152,7 @@ public class VentaDialog extends JDialog {
         }
     }
 
-    private void actualizarTotal() {
+    private void actualizarTotal() { // Método para actualizar el total de la venta según las autopartes seleccionadas y el método de pago . 
         double total = 0.0;
         List<Autoparte> autopartesSeleccionadas = autopartesList.getSelectedValuesList();
         for (Autoparte autoparte : autopartesSeleccionadas) {
@@ -168,6 +167,6 @@ public class VentaDialog extends JDialog {
         }
 
         totalField.setText(String.valueOf(total));
-        System.out.println("Total actualizado: " + total); // Agregar mensaje de depuración
+        System.out.println("Total actualizado: " + total); // Mensaje por consola para ver que funcione bien el total . 
     }
 }
