@@ -10,7 +10,7 @@ public class ClientesTableModel extends AbstractTableModel {
 	 private static final long serialVersionUID = 1L;
 
 	    private List<Cliente> clientes;
-	    private String[] columnNames = {"ID", "Nombre", "Apellido", "DNI", "Dirección", "Teléfono", "Localidad", "Provincia", "Email"};
+	    private String[] columnNames = {"ID", "Nombre", "Apellido", "DNI", "Dirección", "Teléfono", "Localidad", "Provincia", "Email", "Baja"};
 
 	    public ClientesTableModel() {
 	        this.clientes = new ArrayList<>();
@@ -52,6 +52,8 @@ public class ClientesTableModel extends AbstractTableModel {
 	                return cliente.getProvincia();
 	            case 8:
 	                return cliente.getEmail();
+	            case 9:
+	                return cliente.isBaja();
 	            default:
 	                return null;
 	        }

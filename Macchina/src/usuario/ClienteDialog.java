@@ -22,6 +22,7 @@ public class ClienteDialog extends JDialog {
 	    private JTextField localidadField;
 	    private JTextField provinciaField;
 	    private JTextField emailField;
+	    private JCheckBox bajaCheckBox;
 
 	    private JButton guardarButton;
 
@@ -32,7 +33,7 @@ public class ClienteDialog extends JDialog {
 
 	        setTitle(cliente == null ? "Agregar Cliente" : "Modificar Cliente");
 	        setSize(400, 400);
-	        setLayout(new GridLayout(10, 2));
+	        setLayout(new GridLayout(11, 2));
 
 	        add(new JLabel("ID:"));
 	        idField = new JTextField();
@@ -70,6 +71,10 @@ public class ClienteDialog extends JDialog {
 	        emailField = new JTextField();
 	        add(emailField);
 
+	        add(new JLabel("Baja:"));
+	        bajaCheckBox = new JCheckBox();
+	        add(bajaCheckBox);
+	        
 	        guardarButton = new JButton(cliente == null ? "Agregar" : "Modificar");
 	        add(guardarButton);
 
@@ -101,8 +106,9 @@ public class ClienteDialog extends JDialog {
 	        localidadField.setText(cliente.getLocalidad());
 	        provinciaField.setText(cliente.getProvincia());
 	        emailField.setText(cliente.getEmail());
-
+	        bajaCheckBox.setSelected(cliente.isBaja());
 	        idField.setEditable(false);  // ID no editable en modificación
+	        
 	    }
 
 	    private void agregarCliente() {
@@ -116,12 +122,13 @@ public class ClienteDialog extends JDialog {
 	            String localidad = localidadField.getText().trim();
 	            String provincia = provinciaField.getText().trim();
 	            String email = emailField.getText().trim();
-
+	            
+	            
 	            if (nombre.isEmpty() || apellido.isEmpty() || dni.isEmpty() || email.isEmpty()) {
 	                throw new IllegalArgumentException("Los campos nombre, apellido, dni y email son obligatorios.");
 	            }
-
-	            Cliente nuevoCliente = new Cliente(id, nombre, apellido, dni, direccion, telefono, localidad, provincia, email);
+	         // LE PASO FALSE PORQUE NO TENDRIA SENTIDO CREAR UN CLIENTE NUEVO Y QUE ESTE DADO DE BAJA . 
+	            Cliente nuevoCliente = new Cliente(id, nombre, apellido, dni, direccion, telefono, localidad, provincia, email, false); 
 	            empresa.agregarCliente(nuevoCliente);
 
 	            JOptionPane.showMessageDialog(this, "Cliente agregado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -144,12 +151,12 @@ public class ClienteDialog extends JDialog {
 	            String localidad = localidadField.getText().trim();
 	            String provincia = provinciaField.getText().trim();
 	            String email = emailField.getText().trim();
-
+	            boolean baja = bajaCheckBox.isSelected();
+	            
 	            if (nombre.isEmpty() || apellido.isEmpty() || dni.isEmpty() || email.isEmpty()) {
 	                throw new IllegalArgumentException("Los campos nombre, apellido, dni y email son obligatorios.");
 	            }
-
-	            Cliente clienteModificado = new Cliente(id, nombre, apellido, dni, direccion, telefono, localidad, provincia, email);
+	            Cliente clienteModificado = new Cliente(id, nombre, apellido, dni, direccion, telefono, localidad, provincia, email , baja);
 	            empresa.modificarCliente(id, clienteModificado);
 
 	            JOptionPane.showMessageDialog(this, "Cliente modificado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);

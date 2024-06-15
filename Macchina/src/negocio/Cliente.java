@@ -23,10 +23,11 @@ public class Cliente  implements Serializable {
     private String localidad;
     private String provincia;
     private String email;
+    private boolean baja = false;  // Para gestionar la baja del cliente
     private List<Pedido> pedidos;  // Lista de pedidos del cliente
     
     // Constructor
-    public Cliente(int id, String nombre, String apellido, String dni, String direccion, String telefono, String localidad, String provincia, String email) {
+    public Cliente(int id, String nombre, String apellido, String dni, String direccion, String telefono, String localidad, String provincia, String email , boolean baja) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -36,9 +37,18 @@ public class Cliente  implements Serializable {
         this.localidad = localidad;
         this.provincia = provincia;
         this.email = email;
+        this.baja = baja; 
     }
     
-    public String getApellido() {
+    public boolean isBaja() {
+		return baja;
+	}
+
+	public void setBaja(boolean baja) {
+		this.baja = baja;
+	}
+
+	public String getApellido() {
 		return apellido;
 	}
 
@@ -157,6 +167,7 @@ public class Cliente  implements Serializable {
                 ", localidad='" + localidad + '\'' +
                 ", provincia='" + provincia + '\'' +
                 ", email='" + email + '\'' +
+                ", baja='" + baja +
                 '}';
     }
 }
