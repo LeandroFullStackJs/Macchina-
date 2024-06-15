@@ -80,6 +80,8 @@ public class ClienteDialog extends JDialog {
 
 	        if (cliente != null) {
 	            cargarDatosCliente(cliente);
+	        }else {
+	            bajaCheckBox.setEnabled(false); // Deshabilitar checkbox para agregar nuevo cliente
 	        }
 
 	        guardarButton.addActionListener(new ActionListener() {
