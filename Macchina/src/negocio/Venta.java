@@ -41,10 +41,9 @@ public class Venta implements Serializable {
 	    public void agregarDetalle(DetalleVenta detalle) {
 	        detalles.add(detalle);
 	    }
-
-	    public void eliminarDetalle(int idDetalle) {
-	        // Implementa la lógica para eliminar un detalle de la venta
-	    }
+// NO NECESITO ELIMINAR EL DETALLE DE VENTA PORQUE AL ELIMINAR LA VENTA TAMBIEN SE ELIMINA EL DETALLE ( RELACION DE COMPOSICION ) 
+	  //  public void eliminarDetalle(int idDetalle) {     
+	  //  }
 
 
 	    // Métodos estáticos para crear instancias de Venta

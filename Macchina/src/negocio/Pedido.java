@@ -35,11 +35,12 @@ public class Pedido implements Serializable {
 	        this.calcularMontoTotal();
 	    }
 
-	    // Método para eliminar un detalle del pedido
-	    public void eliminarDetalle(DetallePedido detalle) {
-	        this.detalles.remove(detalle);
-	        this.calcularMontoTotal();
-	    }
+	 // NO NECESITO ELIMINAR EL DETALLE DE PEDIDO PORQUE AL ELIMINAR EL PEDIDO TAMBIEN SE ELIMINA EL DETALLE ( RELACION DE COMPOSICION ) 
+	    // Método para eliminar un detalle del pedido . 
+	   // public void eliminarDetalle(DetallePedido detalle) {
+	    //    this.detalles.remove(detalle);
+	     //   this.calcularMontoTotal();
+	   // }
 
 	    // Método para calcular el monto total del pedido
 	    public void calcularMontoTotal() {
